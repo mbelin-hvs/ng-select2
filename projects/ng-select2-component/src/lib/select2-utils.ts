@@ -1,95 +1,22 @@
-import { Select2 } from './select2.component';
-
-export interface Select2Group {
-    label: string;
-    options: Select2Option[];
-    classes?: string;
-}
-
-export interface Select2Option {
-    value: Select2Value;
-    label: string;
-    disabled?: boolean;
-    component?: string | Function;
-    id?: string;
-    classes?: string;
-}
-
-export type Select2Value = string | number | boolean;
-
-export type Select2UpdateValue = Select2Value | Select2Value[];
-
-export type Select2Data = (Select2Group | Select2Option)[];
-
-export interface Select2UpdateEvent<U extends Select2UpdateValue = Select2Value> {
-    component: Select2;
-    value: U;
-    options: Select2Option[];
-}
-
-export const timeout = 200;
-
-export const unicodePatterns: { l: string, s: RegExp }[] = [
-    { l: 'a', s: /[ⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ]/gi },
-    { l: 'aa', s: /ꜳ/gi },
-    { l: 'ae', s: /[æǽǣ]/gi },
-    { l: 'ao', s: /ꜵ/gi },
-    { l: 'au', s: /ꜷ/gi },
-    { l: 'av', s: /[ꜹꜻ]/gi },
-    { l: 'ay', s: /ꜽ/gi },
-    { l: 'b', s: /[ⓑｂḃḅḇƀƃɓ]/gi },
-    { l: 'c', s: /[ⓒｃćĉċčçḉƈȼꜿↄ]/gi },
-    { l: 'd', s: /[ⓓｄḋďḍḑḓḏđƌɖɗꝺ]/gi },
-    { l: 'dz', s: /[ǳǆ]/gi },
-    { l: 'e', s: /[ⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ]/gi },
-    { l: 'f', s: /[ⓕｆḟƒꝼ]/gi },
-    { l: 'g', s: /[ⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ]/gi },
-    { l: 'h', s: /[ⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ]/gi },
-    { l: 'hv', s: /ƕ/gi },
-    { l: 'i', s: /[ⓘｉìíîĩīĭİïḯỉǐȉȋịįḭɨı]/gi },
-    { l: 'j', s: /[ⓙｊĵǰɉ]/gi },
-    { l: 'k', s: /[ⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ]/gi },
-    { l: 'l', s: /[ⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇꝆ]/gi },
-    { l: 'lj', s: /ǉ/gi },
-    { l: 'm', s: /[ⓜｍḿṁṃɱɯ]/gi },
-    { l: 'n', s: /[ⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ]/gi },
-    { l: 'nj', s: /ǌ/gi },
-    { l: 'o', s: /[ⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔƟꝋꝍɵ]/gi },
-    { l: 'oi', s: /ƣ/gi },
-    { l: 'oe', s: /œ/gi },
-    { l: 'oo', s: /ꝏ/gi },
-    { l: 'ou', s: /ȣ/gi },
-    { l: 'p', s: /[ⓟｐṕṗƥᵽꝑꝓꝕ]/gi },
-    { l: 'q', s: /[ⓠｑɋꝗꝙ]/gi },
-    { l: 'r', s: /[ⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ]/gi },
-    { l: 's', s: /[ⓢｓßẞśṥŝṡšṧṣṩșşȿꞩꞅẛ]/gi },
-    { l: 't', s: /[ⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ]/gi },
-    { l: 'tz', s: /ꜩ/gi },
-    { l: 'u', s: /[ⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ]/gi },
-    { l: 'v', s: /[ⓥｖṽṿʋꝟʌ]/gi },
-    { l: 'vy', s: /ꝡ/gi },
-    { l: 'w', s: /[ⓦｗẁẃŵẇẅẘẉⱳ]/gi },
-    { l: 'x', s: /[ⓧｘẋẍ]/gi },
-    { l: 'y', s: /[ⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ]/gi },
-    { l: 'z', s: /[ⓩｚźẑżžẓẕƶȥɀⱬꝣ]/gi }
-];
-
-const defaultMinCountForSearch = 6;
+import { defaultMinCountForSearch, protectRegexp, unicodePatterns } from './select2-const';
+import { Select2Data, Select2Group, Select2Option, Select2UpdateValue, Select2Value } from './select2-interfaces';
 
 export class Select2Utils {
 
     static getOptionByValue(data: Select2Data, value: Select2Value | null | undefined) {
-        for (const groupOrOption of data) {
-            const options = (groupOrOption as Select2Group).options;
-            if (options) {
-                for (const option of options) {
-                    if (option.value === value) {
-                        return option;
+        if (Array.isArray(data)) {
+            for (const groupOrOption of data) {
+                const options = (groupOrOption as Select2Group).options;
+                if (options) {
+                    for (const option of options) {
+                        if (option.value === value) {
+                            return option;
+                        }
                     }
-                }
-            } else {
-                if ((groupOrOption as Select2Option).value === value) {
-                    return groupOrOption as Select2Option;
+                } else {
+                    if ((groupOrOption as Select2Option).value === value) {
+                        return groupOrOption as Select2Option;
+                    }
                 }
             }
         }
@@ -116,18 +43,20 @@ export class Select2Utils {
     }
 
     static getFirstAvailableOption(data: Select2Data) {
-        for (const groupOrOption of data) {
-            const options = (groupOrOption as Select2Group).options;
-            if (options) {
-                for (const option of options) {
+        if (Array.isArray(data)) {
+            for (const groupOrOption of data) {
+                const options = (groupOrOption as Select2Group).options;
+                if (options) {
+                    for (const option of options) {
+                        if (!option.disabled) {
+                            return option.value;
+                        }
+                    }
+                } else {
+                    const option = groupOrOption as Select2Option;
                     if (!option.disabled) {
                         return option.value;
                     }
-                }
-            } else {
-                const option = groupOrOption as Select2Option;
-                if (!option.disabled) {
-                    return option.value;
                 }
             }
         }
@@ -136,12 +65,14 @@ export class Select2Utils {
 
     private static getOptionsCount(data: Select2Data) {
         let count = 0;
-        for (const groupOrOption of data) {
-            const options = (groupOrOption as Select2Group).options;
-            if (options) {
-                count += options.length;
-            } else {
-                count++;
+        if (Array.isArray(data)) {
+            for (const groupOrOption of data) {
+                const options = (groupOrOption as Select2Group).options;
+                if (options) {
+                    count += options.length;
+                } else {
+                    count++;
+                }
             }
         }
         return count;
@@ -178,7 +109,7 @@ export class Select2Utils {
                 for (let j = options.length - 1; j >= 0; j--) {
                     const option = options[j];
                     if (findIt) {
-                        if (!option.disabled) {
+                        if (!option.disabled && !option.hide) {
                             return option;
                         }
                     }
@@ -189,7 +120,7 @@ export class Select2Utils {
             } else {
                 const option = groupOrOption as Select2Option;
                 if (findIt) {
-                    if (!option.disabled) {
+                    if (!option.disabled && !option.hide) {
                         return option;
                     }
                 }
@@ -208,7 +139,7 @@ export class Select2Utils {
             if (options) {
                 for (const option of options) {
                     if (findIt) {
-                        if (!option.disabled) {
+                        if (!option.disabled && !option.hide) {
                             return option;
                         }
                     } else if (!findIt) {
@@ -218,7 +149,7 @@ export class Select2Utils {
             } else {
                 const option = groupOrOption as Select2Option;
                 if (findIt) {
-                    if (!option.disabled) {
+                    if (!option.disabled && !option.hide) {
                         return option;
                     }
                 } else if (!findIt) {
@@ -246,7 +177,7 @@ export class Select2Utils {
     }
 
     private static protectPattern(str: string): string {
-        return str.replace(new RegExp('[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]', 'g'), '\\$&');
+        return str.replace(protectRegexp, '\\$&');
     }
 
     private static formatSansUnicode(str: string): string {

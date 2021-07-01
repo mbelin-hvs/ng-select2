@@ -85,6 +85,11 @@
     z-index: 1051;
     height: 0;
     overflow: hidden;
+
+    .select2-label-content {
+        /* autoprefixer: ignore next */
+        display: contents;
+    }
 }
 
 .select2-results {
@@ -217,27 +222,40 @@
         .select2-selection__placeholder {
             color: #999;
             color: var(--select2-placeholder-color, #999);
+
+            span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-overflow: var(--select2-placeholder-overflow, ellipsis);
+            }
         }
 
         .select2-selection__placeholder__option {
             display: none;
         }
 
+        .select2-selection__reset,
         .select2-selection__arrow {
             display: flex;
             width: 20px;
             align-items: center;
             justify-content: center;
+        }
 
-            &::before {
-                content: ' ';
-                border-color: #888 transparent;
-                border-color: var(--select2-arrow-color, #888) transparent;
-                border-style: solid;
-                border-width: 5px 4px 0;
-                height: 0;
-                width: 0;
-            }
+        .select2-selection__arrow::before {
+            content: ' ';
+            border-color: #888 transparent;
+            border-color: var(--select2-arrow-color, #888) transparent;
+            border-style: solid;
+            border-width: 5px 4px 0;
+            height: 0;
+            width: 0;
+        }
+
+        .select2-selection__reset {
+            color: #999;
+            color: var(--select2-reset-color, #999);
         }
     }
 
@@ -286,10 +304,16 @@
         }
 
         .select2-selection__placeholder {
+            display: block;
+            width: 100%;
             color: #999;
             color: var(--select2-placeholder-color, #999);
             margin-top: 5px;
             float: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: var(--select2-placeholder-overflow, ellipsis);
         }
 
         .select2-selection__placeholder__option {
@@ -339,7 +363,7 @@
         .select2-selection--multiple {
             border: solid #000 1px;
             border: solid var(--select2-selection-focus-border-color, #000) 1px;
-            outline: 0;
+            outline: none;
         }
     }
 
@@ -348,7 +372,7 @@
         .select2-selection--multiple {
             border: solid #000 1px;
             border: solid var(--select2-selection-focus-border-color, #000) 1px;
-            outline: 0;
+            outline: none;
         }
     }
 
@@ -395,7 +419,7 @@
         .select2-search__field {
             background: transparent;
             border: none;
-            outline: 0;
+            outline: none;
             box-shadow: none;
             -webkit-appearance: textfield;
         }
@@ -465,6 +489,10 @@
         color: var(--select2-option-highlighted-text-color, #fff);
     }
 
+    .select2-results__option--hide {
+        display: none;
+    }
+
     .select2-results__group {
         cursor: default;
         display: block;
@@ -474,6 +502,13 @@
         background: transparent;
         background: var(--select2-option-group-background, transparent);
     }
+}
+
+.select2-no-result {
+    color: #888;
+    color: var(--select2-no-result-color, #888);
+    font-style: italic;
+    font-style: var(--select2-font-style-color, italic);
 }
 
 :host.nostyle {
@@ -647,6 +682,11 @@
         color: #888;
         color: var(--select2-hint-text-color, #888);
     }
+}
+
+::ng-deep .select2-overlay-backdrop {
+    background: rgba(0, 0, 0, 0.32);
+    background: var(--select2-overlay-backdrop, transparent);
 }
 
 // material fix (firefox)

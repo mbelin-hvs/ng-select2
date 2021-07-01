@@ -1,4 +1,7 @@
-::ng-deep :root {
+@import "~@angular/cdk/overlay-prebuilt.css";
+@import "~highlight.js/styles/github.css";
+
+:root {
     /* label */
     --select2-label-text-color: #000;
     --select2-required-color: red;
@@ -19,8 +22,15 @@
     --select2-selection-choice-hover-close-color: #333;
 
     /* placeholder */
-
     --select2-placeholder-color: #999;
+    --select2-placeholder-overflow: ellipsis;
+
+    /* no result message */
+    --select2-no-result-color: #888;
+    --select2-font-style-color: italic;
+
+    /* reset */
+    --select2-reset-color: #999;
 
     /* arrow */
     --select2-arrow-color: #888;
@@ -28,6 +38,9 @@
     /* dropdown panel */
     --select2-dropdown-background: #fff;
     --select2-dropdown-border-color: #aaa;
+
+    /* overlay */
+    --select2-overlay-backdrop: transparent;
 
     /* search field */
     --select2-search-border-color: #aaa;
@@ -60,25 +73,13 @@
     --select2-material-option-selected-text-color: #ff5722;
 }
 
-#select2-17 ::ng-deep .select2-multiple-labels {
-    display: flex;
-    justify-content: space-between;
-}
-
-.noStyle {
-    background-color: antiquewhite;
-}
-
-.flower-list ::ng-deep .flower {
-    &.white::before {
-        content: "🌼 ";
+nav {
+    ul {
+        display: block;
     }
 
-    &.red::before {
-        content: "🌹 ";
-    }
-
-    &.yellow::before {
-        content: "🌻 ";
+    li {
+        display: inline-block;
+        padding: 0 15px;
     }
 }

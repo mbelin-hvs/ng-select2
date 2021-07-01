@@ -1,16 +1,23 @@
 {
   "name": "ng-select2-component",
-  "version": "7.1.7",
+  "version": "8.0.2",
+  "description": "An Angular select2 component.",
+  "author": "York Yao, Célian Veyssière",
+  "license": "MIT",
+  "dependencies": {
+    "ngx-infinite-scroll": "10.0.1"
+  },
   "peerDependencies": {
-    "@angular/common": "^7.0.0-rc.0 || ^7.0.0",
-    "@angular/core": "^7.0.0-rc.0 || ^7.0.0"
+    "@angular/cdk": ">=10.0.0",
+    "@angular/common": ">=10.0.0",
+    "@angular/core": ">=10.0.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Harvest-Dev/ng-select2.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.com"
+    "registry": "https://registry.npmjs.org"
   },
   "bugs": {
     "url": "https://github.com/Harvest-Dev/ng-select2/issues"

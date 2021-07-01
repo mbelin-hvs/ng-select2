@@ -1,5 +1,117 @@
 # Changelog of ng-select2
 
+## V8.0.2 (2021-07-01)
+
+### Corrections
+
+- fix open event with overlay
+- fix ExpressionChangedAfterItHasBeenCheckedError
+
+## V8.0.1 (2021-07-01)
+
+### Corrections
+
+- fix overlay size on reopen after resize
+
+## V8.0.0 (2021-06-30)
+
+### Breaking Changes
+
+- minimum required support has been upgraded to Angular `10.0`. 
+- remove parameters `material` and `noStyle`, use `styleMode`.
+
+### Changes
+                
+- add `overlay` parameter with Angular CDK, to change the display method of the dropdown list to the root of the DOM. (See README).
+- add `noResultMessage` parameter, to display a message if there is no result.
+- add `styleMode` parameter, to choose an alternative predefined style of the component.
+
+## V7.3.1 (2021-04-24)
+
+### Corrections
+
+- fix placeholder overflow (ellipsis)
+
+## V7.3.0 (2021-04-23)
+
+### Changes
+
+- add `ngx-infinite-scroll` support (See README)
+- add `(removedOption)` event, triggered when an option is removed from the list of selected options options list
+
+### Corrections
+
+- remove a forgotten logger 
+
+## V7.2.3 (2021-03-11)
+
+### Corrections
+
+- fix crash when switching between multiple and non-multiple 
+
+### Demo
+
+- add html generator 
+
+## V7.2.2 (2021-03-05)
+
+### Corrections
+
+- hidden options are no longer selectable with keyboard
+
+## V7.2.1 (2021-03-04)
+
+### Changes
+
+- add a possibility to hide an option
+- add an argument `resettable` to display a reset button (in single mode) 
+
+## V7.2.0 (2020-12-09)
+
+### Changes
+
+- formating options & groups with template
+
+### Corrections
+
+- crash when data is empty
+
+## V7.1.11 (2020-11-12)
+
+### Corrections
+
+- support for Angular versions up to 11
+
+## V7.1.10 (2020-11-11)
+
+### Corrections
+
+- also call markForCheck() on the change detector when the filtered values are set
+- support for Angular versions up to 10
+
+## V7.1.9 (2020-11-02)
+
+### Corrections
+
+- Change event is stopped for input
+- Fix CSS for outline
+- Fix infinite valueChange sometimes because of asynchronous test
+
+## V7.1.8 (2020-10-26)
+
+### Changes
+
+- change the return of these events:
+    - `(open)`: `void` to `Select2`
+    - `(close)`: `void` to `Select2`
+    - `(focus)`: `void` to `Select2`
+    - `(blur)`: `void` to `Select2`
+    - `(search)`: `string` to `Select2SearchEvent`
+
+### Corrections
+
+- Fix multiple events for `(update)` when value changes
+
 ## V7.1.7 (2020-10-19)
 
 ### Corrections

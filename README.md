@@ -12,7 +12,15 @@ npm i ng-select2-component --save
 
 ## Requirements
 
-- Angular 7.0.0 and more
+- peerDependencies:
+    - `angular` 10.0.0 and more
+    - `angular/cdk` 10.0.0 and more
+
+- dependencies (include):
+    -  `ngx-infinite-scroll@^10.0.1`
+
+> **Note:**<br>
+> For `angular` 7, 8 and 9 : use version `7.3.1`.
 
 ## Demo
 
@@ -32,6 +40,7 @@ npm i ng-select2-component --save
 + multiple selection
 + material style
 + form binding
++ templating
 
 ## Usage
 
@@ -56,60 +65,178 @@ class MainModule { }
 ```
 ### properties and events of the component
 
-name | type | status | default | description
---- | --- | --- | --- | ---
-`data` | [`Select2Data`](#select2-data-structure) | required | |  the data of the select2
-`value` | [`Select2Value`](#select2-data-structure)| | | initial value
-`disabled` | `boolean` | | |  whether the component is disabled
-`minCharForSearch` | `number` | | `0` | start the search when the number of characters is reached (`0` = unlimited)
-`minCountForSearch` | `number` | | `6` |  hide search box if `options.length < minCountForSearch` 
-`displaySearchStatus` | `'default'` or `'hidden'` or `'always'` | |  `'default'` | display the search box (`default` : is based on `minCountForSearch`)
-`placeholder` | `string` | | | the placeholder string if nothing selected
-`customSearchEnabled` | `boolean` | | | will trigger `search` event, and disable inside filter
-`multiple` | `boolean` | | | select multiple options
-`limitSelection` | `number` | | `0` | to limit multiple selection  (`0` = unlimited)
-`hideSelectedItems` | `boolean` | | | for `multiple`, remove selected values
-`resultMaxHeight` | `string` | | |  change the height size of results
-`listPosition` | `'below'` or `'above'` | | `'below'` | the position for the dropdown list
-`material` | `""` or `true` or `'true'` | | | enable material style
-`nostyle` | `""` or `true` or `'true'` | | | remove border and background color
-`editPattern` | `(str: string) => string` | | | use it for change the pattern of the filter search
-`ngModel`/`id`/`required`/<br>`disabled`/`readonly`/`tabIndex` | | | |  just like a `select` control | 
-`(update)` | `(event: `[`Select2UpdateEvent`](#select2-data-structure)`) => void` | event | |  triggered when user select an option
-`(open)` | `() => void` | event | |  triggered when user open the options
-`(close)` | `() => void` | event | |  triggered when user close the options
-`(focus)` | `() => void` | event | |  triggered when user enters the component
-`(blur)` | `() => void` | event | |  triggered when user leaves the component
-`(search)` | `(text: string) => void` | event | |  triggered when search text changed
+name                     | type                                     | status   | default     | description
+------------------------ | ---------------------------------------- | -------- | ----------- | ---------------------------------------------------------------
+`data`                   | [`Select2Data`](#select2-data-structure) | required |             | the data of the select2
+`value`                  | [`Select2Value`](#select2-data-structure)|          |             | initial value
+`minCharForSearch`       | `number`                                 |          | `0`         | start the search when the number of characters is reached (`0` = unlimited)
+`minCountForSearch`      | `number`                                 |          | `6`         | hide search box if `options.length < minCountForSearch`
+`displaySearchStatus`    | `'default'`<br>`'hidden'`<br>`'always'`  |          | `'default'` | display the search box (`default` : is based on `minCountForSearch`)
+`placeholder`            | `string`                                 |          |             | the placeholder string if nothing selected
+`noResultMessage`        | `string`                                 |          |             | the message string if no results when using the search field 
+`customSearchEnabled`    | `boolean`                                |          | `false`     | will trigger `search` event, and disable inside filter
+`multiple`               | `boolean`                                |          | `false`     | select multiple options
+`resettable`             | `boolean`                                |          | `false`     | add a button to reset value (not with `multiple`)
+`limitSelection`         | `number`                                 |          | `0`         | to limit multiple selection  (`0` = unlimited)
+`hideSelectedItems`      | `boolean`                                |          | `false`     | for `multiple`, remove selected values
+`resultMaxHeight`        | `string`                                 |          | `'200px'`   | change the height size of results
+`listPosition`           | `'below'`<br>`'above'`                   |          | `'below'`   | the position for the dropdown list
+`infiniteScroll`         | `boolean`                                |          | `false`     | active infiniteScroll on dropdown list ( with `ngx-infinite-scroll`)
+`infiniteScrollDistance` | `number`                                 |          | `1.5`       | infiniteScroll distance
+`infiniteScrollThrottle` | `number`                                 |          | `150`       | infiniteScroll throttle
+`overlay`                | `boolean`                                |          | `false`     | active an overlay mode for dropdown list (with angular cdk). (See [Overlay](#overlay))
+`sytleMode`              | `'default'`<br>`'material'`<br>`'noStyle'` |        | `'default'` | change style for material style or remove border and background color
+`templates`              | `TemplateRef`<br> `{option?: TemplateRef, group?: TemplateRef}`<br> `{templateId1: TemplateRef, ...}` | | | use templates for formatting content (see [Templating](#templating))
+`editPattern`            | `(str: string) => string`                |          |             | use it for change the pattern of the filter search
+`ngModel`<br>`id`<br>`required`<br>`disabled`<br>`readonly`<br>`tabIndex` | |  |             | just like a `select` control |
+`(update)`               | `(event: `[`Select2UpdateEvent`](#select2-data-structure)`) => void` | event | |  triggered when user select an option
+`(open)`                 | `(event: Select2) => void`               | event    |             | triggered when user open the options
+`(close)`                | `(event: Select2) => void`               | event    |             | triggered when user close the options
+`(focus)`                | `(event: Select2) => void`               | event    |             | triggered when user enters the component
+`(blur)`                 | `(event: Select2) => void`               | event    |             | triggered when user leaves the component
+`(search)`               | `(event: `[`Select2SearchEvent`](#select2-data-structure)`) => void` | event | | triggered when search text changed
+`(scroll)`               | `(event: `[`Select2ScrollEvent`](#select2-data-structure)`) => void` | event | | triggered when infiniteScroll is on `up` or `down` position
+`(removedOption)`        | `(event: `[`Select2RemoveEvent`](#select2-data-structure)`) => void` | event | | for `multiple`, triggered when an option is removed from the list of selected options options list
 
 ### select2 data structure
 
 ```ts
 type Select2Data = (Select2Group | Select2Option)[];
 
-interface Select2Group = {
+export interface Select2Group {
+    /** label of group */
     label: string;
+    /** options list */
     options: Select2Option[];
+    /** add classes  */
     classes?: string;
-};
+    /** template id  */
+    templateId?: string;
+    /** template data  */
+    data?: any;
+}
 
-interface Select2Option = {
+export interface Select2Option {
+    /** value  */
     value: Select2Value;
+    /** label of option */
     label: string;
+    /** no selectable is disabled */
     disabled?: boolean;
-    component?: string | Function; // the component
+    /** for identification */
+    id?: string;
+    /** add classes  */
     classes?: string;
-};
+    /** template id  */
+    templateId?: string;
+    /** template data  */
+    data?: any;
+    /** hide this option */
+    hide?: boolean;
+}
 
-type Select2Value = string | number | boolean;
+type Select2Value = string | number | boolean | object;
 
 type Select2UpdateValue = Select2Value | Select2Value[];
 
-interface Select2UpdateEvent<U extends Select2UpdateValue> {
+export interface Select2UpdateEvent<U extends Select2UpdateValue = Select2Value> {
     component: Select2;
     value: U;
     options: Select2Option[];
 }
+
+export interface Select2SearchEvent<U extends Select2UpdateValue = Select2Value> {
+    component: Select2;
+    value: U;
+    search: string;
+}
+
+export interface Select2RemoveEvent<U extends Select2UpdateValue = Select2Value> {
+    component: Select2;
+    value: U;
+    removedOption: Select2Option;
+}
+
+export interface Select2ScrollEvent {
+    component: Select2;
+    way: 'up' | 'down';
+    search: string;
+}
+
+```
+
+### Templating
+
+#### Unique template
+
+```html
+<select2 [data]="data"
+         [templates]="template">
+    <ng-template #template let-data="data"><strong>{{data?.color}}</strong>: {{data?.name}}</ng-template>
+</select2>
+```
+
+```ts
+const data: Select2Data = [
+    {
+        value: 'heliotrope',
+        label: 'Heliotrope',
+        data: { color: 'white', name: 'Heliotrope' }
+    },
+    {
+        value: 'hibiscus',
+        label: 'Hibiscus',
+        data: { color: 'red', name: 'Hibiscus' }
+    }
+]
+```
+
+#### Template group & option
+
+```html
+<select2 [data]="data"
+         [templates]="{option : option, group: group}">
+    <ng-template #option let-data="data">{{data?.name}}</ng-template>
+    <ng-template #group let-label="label">Group: {{label}}</ng-template>
+</select2>
+```
+
+No difference in data structure.
+The template is defined by its type, option or group, automatically.
+
+#### Template by templateId
+
+```html
+<select2 [data]="data"
+         [templates]="{template1 : template1, template2: template2}">
+    <ng-template #template1 let-data="data">{{data?.name}}</ng-template>
+    <ng-template #template2 let-label="label" let-data="data">{{label}} : {{data?.color}}</ng-template>
+</select2>
+```
+
+```ts
+const data: Select2Data = [
+    {
+        value: 'heliotrope',
+        label: 'Heliotrope',
+        data: { color: 'white', name: 'Heliotrope' },
+        templateId: 'template1'
+    },
+    {
+        value: 'hibiscus',
+        label: 'Hibiscus',
+        data: { color: 'red', name: 'Hibiscus'},
+        templateId: 'template2'
+    }
+]
+```
+
+### Overlay
+
+If the overlay mode is used / activated, add to the project root in CSS (with `ViewEncapsulation.None`)
+
+```css
+@import "~@angular/cdk/overlay-prebuilt.css";
 ```
 
 ## CSS variables (doesn't work on IE11)
@@ -137,9 +264,16 @@ It's possible to change different colors (and more) with CSS variables without h
     --select2-selection-choice-close-color: #999;
     --select2-selection-choice-hover-close-color: #333;
 
-    /* placeholder */
-
+     /* placeholder */
     --select2-placeholder-color: #999;
+    --select2-placeholder-overflow: ellipsis;
+
+    /* no result message */
+    --select2-no-result-color: #888;
+    --select2-font-style-color: italic;
+
+    /* reset */
+    --select2-reset-color: #999;
 
     /* arrow */
     --select2-arrow-color: #888;
@@ -147,6 +281,9 @@ It's possible to change different colors (and more) with CSS variables without h
     /* dropdown panel */
     --select2-dropdown-background: #fff;
     --select2-dropdown-border-color: #aaa;
+
+    /* overlay */
+    --select2-overlay-backdrop: transparent;
 
     /* search field */
     --select2-search-border-color: #aaa;

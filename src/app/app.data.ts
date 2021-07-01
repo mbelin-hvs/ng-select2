@@ -1,4 +1,4 @@
-import { Select2Data } from 'projects/ng-select2-component/src/lib/select2-utils';
+import { Select2Data } from 'projects/ng-select2-component/src/public_api';
 
 export const data1: Select2Data = [
     {
@@ -196,7 +196,8 @@ export const data19: Select2Data = [
     { value: 'foo5', label: 'foo5' },
     { value: 'foo6', label: 'foo6' },
     { value: 'foo7', label: 'foo7' },
-    { value: 'foo8', label: 'foo8' }
+    { value: 'foo8', label: 'foo8' },
+    { value: 'foo9', label: 'foo9', hide: true }
 ];
 
 export const data13: Select2Data = [
@@ -236,3 +237,81 @@ export const data22: Select2Data = [
     { value: 'petunia', label: 'Petunia', classes: 'white flower', id: 'option-petunia' },
     { value: 'sunflower', label: 'Sunflower', classes: 'yellow flower', id: 'option-sunflower' }
 ];
+
+export const data23: Select2Data = [
+    {
+        value: 'heliotrope', label: 'Heliotrope', data: { color: 'white', name: 'Heliotrope' },
+        templateId: 'template1', id: 'option-heliotrope'
+    },
+    {
+        value: 'hibiscus', label: 'Hibiscus', data: { color: 'red', name: 'Hibiscus' },
+        templateId: 'template1', id: 'option-hibiscus'
+    },
+    {
+        value: 'lily', label: 'Lily', data: { color: 'white', name: 'Lily' },
+        templateId: 'template2', id: 'option-lily'
+    },
+    {
+        value: 'marigold', label: 'Marigold', data: { color: 'red', name: 'Marigold' },
+        templateId: 'template2', id: 'option-marigold'
+    },
+    {
+        value: 'petunia', label: 'Petunia', data: { color: 'white', name: 'Petunia' },
+        templateId: 'template3', id: 'option-petunia'
+    },
+    {
+        value: 'sunflower', label: 'Sunflower', data: { color: 'yellow', name: 'Sunflower' },
+        templateId: 'template3', id: 'option-sunflower'
+    }
+];
+
+export const data24: Select2Data = [
+    {
+        label: 'Red',
+        data: { name: '(Red)' },
+        options: [
+            {
+                value: 'hibiscus', label: 'Hibiscus', data: { color: 'red', name: 'Hibiscus' },
+                templateId: 'template1', id: 'option-hibiscus'
+            },
+            {
+                value: 'marigold', label: 'Marigold', data: { color: 'red', name: 'Marigold' },
+                templateId: 'template2', id: 'option-marigold'
+            },
+        ]
+    },
+    {
+        label: 'Yellow',
+        data: { name: '(Yellow)' },
+        options: [
+            {
+                value: 'sunflower', label: 'Sunflower', data: { color: 'yellow', name: 'Sunflower' },
+                templateId: 'template3', id: 'option-sunflower'
+            }
+        ]
+    },
+    {
+        label: 'White',
+        data: { name: '(White)' },
+        options: [
+            {
+                value: 'heliotrope', label: 'Heliotrope', data: { color: 'white', name: 'Heliotrope' },
+                templateId: 'template1', id: 'option-heliotrope'
+            },
+            {
+                value: 'lily', label: 'Lily', data: { color: 'white', name: 'Lily' },
+                templateId: 'template2', id: 'option-lily'
+            },
+            {
+                value: 'petunia', label: 'Petunia', data: { color: 'white', name: 'Petunia' },
+                templateId: 'template3', id: 'option-petunia'
+            }
+        ]
+    }
+
+];
+
+export let data26: Select2Data = [];
+for (let i = 1; i <= 50; i++) {
+    data26.push({ value: i, label: '>' + i });
+}

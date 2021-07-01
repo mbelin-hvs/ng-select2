@@ -1,0 +1,29 @@
+label {
+    display: inline-block;
+    width: 250px;
+}
+
+.cols {
+    display: flex;
+    max-width: 100%;
+
+    & > * {
+        flex: 1 0 50%;
+        max-width: 50%;
+    }
+}
+
+.code {
+    overflow: auto;
+}
+
+.error {
+    color: red;
+}
+
+textarea#json {
+    width: calc(100% - 15px);
+    resize: vertical;
+    box-sizing: border-box;
+    height: 200px;
+}
